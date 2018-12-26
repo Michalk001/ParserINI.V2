@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ParserINI.src.Interfaces;
 using ParserINIFile.Model;
 
 namespace ParserINIFile
 {
-    public class ParserINI
+    public class ParserINI : IParserINI
     {
         private string _path;
         private Encoding _encoding;
-        public string path {
-            private get {
+        public string Path {
+            get {
                 return _path;
             }
             set
@@ -20,21 +21,21 @@ namespace ParserINIFile
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentException("Bad path");
                 _path = value;
-                fileOperation.path = value;
+                fileOperation.Path = value;
                 fileOperation.Open();
             }
         }
 
-        public Encoding encoding
+        public Encoding Encoding
         {
-            private get
+            get
             {
                 return _encoding;
             }
             set
             {
                 _encoding = value;
-                fileOperation.encoding = value;
+                fileOperation.Encoding = value;
                 fileOperation.Open(_encoding);
             }
         }
@@ -47,7 +48,7 @@ namespace ParserINIFile
         {
             
             fileOperation = new FileOperation();
-            this.path = path;
+            this.Path = path;
             
             
         }

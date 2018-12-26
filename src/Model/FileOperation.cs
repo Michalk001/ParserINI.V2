@@ -1,4 +1,5 @@
-﻿using ParserINIFile.Configuration;
+﻿using ParserINI.src.Interfaces;
+using ParserINIFile.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace ParserINIFile.Model
 {
-    class FileOperation
+    class FileOperation : IFileOperation
     {
         private StreamReader FileRead { get; set; }
         private StreamWriter FileWrite { get; set; }
         private FileStream FileStream { get; set; }
 
 
-        public string path { get; set; }
-        public Encoding encoding { get; set; }
+        public string Path { get; set; }
+        public Encoding Encoding { get; set; }
 
         public void Open()
         {
-            FileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            FileStream = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             FileRead = new StreamReader(FileStream, Encoding.UTF8);
             FileWrite = new StreamWriter(FileStream, Encoding.UTF8);
         }
         public void Open(Encoding encoding)
         {
-            FileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            FileStream = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             FileRead = new StreamReader(FileStream, encoding);
             FileWrite = new StreamWriter(FileStream, encoding);
         }
@@ -34,14 +35,14 @@ namespace ParserINIFile.Model
         {
             foreach (var item in sectionRegistries)
             {
-                FileWrite.WriteLine($"{Config.Get.SectionStartChar}{item.sectionName}{Config.Get.SectionEndChar}");
+                FileWrite.WriteLine($"{Config.Get.SectionStartChar}{item.SectionName}{Config.Get.SectionEndChar}");
                 FileWrite.Flush();
                 foreach (var itemA in item.Get())
                 {
-                    if(itemA.comment != null && itemA.comment != "")
-                        FileWrite.WriteLine($"{itemA.key}{Config.Get.KeyValueChar}{itemA.value} {Config.Get.CommentChar}{itemA.comment}");
+                    if(itemA.Comment != null && itemA.Comment != "")
+                        FileWrite.WriteLine($"{itemA.Key}{Config.Get.KeyValueChar}{itemA.Value} {Config.Get.CommentChar}{itemA.Comment}");
                     else
-                        FileWrite.WriteLine($"{itemA.key}{Config.Get.KeyValueChar}{itemA.value}");
+                        FileWrite.WriteLine($"{itemA.Key}{Config.Get.KeyValueChar}{itemA.Value}");
                     FileWrite.Flush();
 
                 }

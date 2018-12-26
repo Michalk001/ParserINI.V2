@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParserINI.src.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace ParserINIFile.Model
 {
-    public class ListSectionRegistries
+    public class ListSectionRegistries : IListSectionRegistries
     {
         private Dictionary<String,SectionRegistry> list = new  Dictionary<string,SectionRegistry>();
 
         public void Add(SectionRegistry sectionRegistry)
         {
-            if (!list.ContainsKey(sectionRegistry.sectionName))
-                list.Add(sectionRegistry.sectionName, sectionRegistry); 
+            if (!list.ContainsKey(sectionRegistry.SectionName))
+                list.Add(sectionRegistry.SectionName, sectionRegistry); 
             else
             {
-                var ss = list.Values.Where(x => x.sectionName == sectionRegistry.sectionName).FirstOrDefault();
+                var ss = list.Values.Where(x => x.SectionName == sectionRegistry.SectionName).FirstOrDefault();
                 ss.Add(sectionRegistry.Get());
-                list.Remove(ss.sectionName);
-                list.Add(ss.sectionName,ss);
+                list.Remove(ss.SectionName);
+                list.Add(ss.SectionName,ss);
                
             }
         }
@@ -27,8 +28,8 @@ namespace ParserINIFile.Model
         {
             foreach(var item in sectionRegistries)
             {
-                if (!list.ContainsKey(item.sectionName))
-                    list.Add(item.sectionName, item);
+                if (!list.ContainsKey(item.SectionName))
+                    list.Add(item.SectionName, item);
             }
         }
 
@@ -36,8 +37,10 @@ namespace ParserINIFile.Model
 
         public void Add(string sectionName, string key, string value, string comment)
         {
-            SectionRegistry sectionRegistry = new SectionRegistry();
-            sectionRegistry.sectionName = sectionName;
+            SectionRegistry sectionRegistry = new SectionRegistry
+            {
+                SectionName = sectionName
+            };
             sectionRegistry.Add(key, value, comment);
             if (Get(sectionName) == null)
             {

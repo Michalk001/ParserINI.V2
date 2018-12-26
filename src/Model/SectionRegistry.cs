@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParserINI.src.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace ParserINIFile.Model
 {
-    public class SectionRegistry
+    public class SectionRegistry : ISectionRegistry
     {
-        public string sectionName { get; set; }
+        public string SectionName { get; set; }
         private Dictionary<string, Registry> registries = new Dictionary<string, Registry>();
         public void Add(Registry reg)
         {
-            if(!registries.ContainsKey(reg.key))
-                registries.Add(reg.key, reg);
+            if(!registries.ContainsKey(reg.Key))
+                registries.Add(reg.Key, reg);
         }
         public void Add(List<Registry> reg)
         {
@@ -25,9 +26,9 @@ namespace ParserINIFile.Model
         {
             var reg = new Registry()
             {
-                value = value,
-                key = key,
-                comment = comment
+                Value = value,
+                Key = key,
+                Comment = comment
             };
             Add(reg);                  
         }

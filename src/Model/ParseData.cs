@@ -1,4 +1,5 @@
 ﻿
+using ParserINI.src.Interfaces;
 using ParserINIFile.Configuration;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace ParserINIFile.Model
 {
-    public class ParseData
+    public class ParseData : IParseData
     {
 
-        List<SectionRegistry> listSectionIni = new List<SectionRegistry>();
-        SectionRegistry sectionRegistry = null;
-        List<Registry> registries = new List<Registry>();
+        private List<SectionRegistry> listSectionIni = new List<SectionRegistry>();
+        private SectionRegistry sectionRegistry = null;
+        private List<Registry> registries = new List<Registry>();
 
 
         private void Section(string data)
@@ -27,7 +28,7 @@ namespace ParserINIFile.Model
             }
             sectionRegistry = new SectionRegistry
             {
-                sectionName = data.TrimStart(Config.Get.SectionStartChar).TrimEnd(Config.Get.SectionEndChar)
+                SectionName = data.TrimStart(Config.Get.SectionStartChar).TrimEnd(Config.Get.SectionEndChar)
             };
         }
 
@@ -55,9 +56,9 @@ namespace ParserINIFile.Model
             {
                 registries.Add(new Registry
                 {
-                    key = keyTmp,
-                    value = valueTmp,
-                    comment = commentTmp
+                    Key = keyTmp,
+                    Value = valueTmp,
+                    Comment = commentTmp
 
                 });
             }
